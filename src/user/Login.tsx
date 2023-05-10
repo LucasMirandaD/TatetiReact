@@ -34,12 +34,13 @@ export default function Login() {
 
         try {
             await login({
-                login: userName,
+                nickname: userName,
                 password
             })
             history('/')
         } catch (error) {
             errorHandler.processRestValidations(error)
+            alert(error)
         }
     }
 
@@ -49,8 +50,8 @@ export default function Login() {
 
             <Form>
                 <FormInput
-                    label="Usuario"
-                    name="login"
+                    label="Nickname"
+                    name="nickname"
                     errorHandler={errorHandler}
                     onChange={(event) => setUserName(event.target.value)} />
 

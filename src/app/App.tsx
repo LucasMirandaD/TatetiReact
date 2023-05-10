@@ -12,6 +12,7 @@ import Welcome from "../welcome/Welcome"
 import "./App.css"
 import Menu from "./Menu"
 import Toolbar from "./Toolbar"
+import { Game } from "../Game/Game"
 
 export default function App() {
   return (
@@ -37,6 +38,7 @@ export default function App() {
                 <Route path="/info" element={<StateLoggedInRoute component={Info} />} />
                 <Route path="/profile" element={<StateLoggedInRoute component={Profile} />} />
                 <Route path="/password" element={<StateLoggedInRoute component={Password} />} />
+                <Route path="/Game" element={<Game />} />
               </Routes>
             </td>
           </tr>

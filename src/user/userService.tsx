@@ -10,19 +10,33 @@ export interface Token {
   token: string
 }
 
+/* eslint-disable */
 export async function login(params: {
-  login: string
+  nickname: string
   password: string
-}): Promise<Token> {
+}): Promise<User> {
   const res = (
-    await axios.post(environment.backendUrl + "/v1/user/signin", params)
-  ).data as Token
+    await axios.get(`${environment.backendUrl}/players/${params.nickname}/login?password=${params.password}`)
+    ).data
+    
+    let user: User = {
+      id: res.player.id,
+      nickname: res.player.nickname,
+      name: res.player.name,
+      password: res.player.password,
+      token: res.player.token,
+      permissions: []
+    }
 
-  setCurrentToken(res.token)
-  updateSessionToken(res.token)
-  void reloadCurrentUser().then()
+  if (res.player.password === params.password){
+    setCurrentToken(res.player.token)
+    updateSessionToken(res.player.token)
+    updateSessionUser(user) /* la respuesta es un objeto user */
+    // void reloadCurrentUser().then()
+  }
   return res
 }
+/* eslint-enable */
 
 // Valores almacenados en LOCAL STORE
 function getCurrentToken(): string | undefined {
@@ -40,10 +54,13 @@ function getCurrentUser(): User | undefined {
   return localStorage.getItem("user") as unknown as User
 }
 
-export async function logout(): Promise<void> {
+export function logout() {
   localStorage.removeItem("token")
   localStorage.removeItem("user")
-
+  // tomados de abajo
+  cleanupSessionToken()
+  cleanupSessionUser()
+/*
   try {
     await axios.get(environment.backendUrl + "/v1/user/signout")
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -55,15 +72,19 @@ export async function logout(): Promise<void> {
     cleanupSessionToken()
     cleanupSessionUser()
   }
+  */
 }
 
 export interface User {
   id: string
   name: string
-  login: string
   permissions: string[]
+  nickname: string
+  password: string
+  token: string
 }
 
+/*
 export async function reloadCurrentUser(): Promise<User> {
   try {
     const res = (await axios.get(environment.backendUrl + "/v1/users/current"))
@@ -79,17 +100,18 @@ export async function reloadCurrentUser(): Promise<User> {
     throw err
   }
 }
+*/
 
 export async function newUser(params: {
   name: string
   password: string
   login: string
 }): Promise<Token> {
-  const res = (await axios.post(environment.backendUrl + "/v1/user", params))
+  const res = (await axios.post(environment.backendUrl + "/players", params))
     .data as Token
   setCurrentToken(res.token)
   updateSessionToken(res.token)
-  void reloadCurrentUser().then()
+ // void reloadCurrentUser().then()
   return res
 }
 
@@ -118,6 +140,6 @@ if (getCurrentToken()) {
     axios.defaults.headers.common.Authorization = "bearer " + currentToken
     updateSessionToken(currentToken)
     updateSessionUser(currentUser)
-    void reloadCurrentUser().then()
+  //  void reloadCurrentUser().then()
   }
 }

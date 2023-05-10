@@ -15,16 +15,16 @@ export default function StateInfo() {
             <Form>
                 <div className="form-group">
                     <label>Login</label>
-                    <input className="form-control" id="login" value={user?.login} disabled />
+                    <input className="form-control" id="login" value={user?.nickname} disabled />
                 </div>
                 <div className="form-group">
                     <label>Nombre</label>
                     <input className="form-control" id="name" value={user?.name} disabled />
                 </div>
-                <div className="form-group">
+                {/* <div className="form-group">
                     <label>Permisos</label>
                     <input className="form-control" id="name" value={user?.permissions} disabled />
-                </div>
+                </div> */}
                 <div className="form-group">
                     <label>Token</label>
                     <input className="form-control" id="name" value={token} disabled />
