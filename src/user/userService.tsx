@@ -108,7 +108,7 @@ export async function reloadCurrentUser(): Promise<User> {
 export async function newUser(params: {
   name: string
   password: string
-  login: string
+  nickname: string
 }): Promise<Token> {
   const res = (await axios.post(environment.backendUrl + "/players", params))
     .data as Token

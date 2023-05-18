@@ -15,7 +15,7 @@ import { newUser } from "./userService"
 
 export default function Register() {
   const history = useNavigate()
-  const [login, setLogin] = useState("")
+  const [nickname, setNickname] = useState("")
   const [name, setName] = useState("")
   const [password, setPassword] = useState("")
   const [password2, setPassword2] = useState("")
@@ -24,7 +24,7 @@ export default function Register() {
 
   const registerClick = async () => {
     errorHandler.cleanRestValidations()
-    if (!login) {
+    if (!nickname) {
       errorHandler.addError("login", "No puede estar vacío")
     }
     if (!name) {
@@ -43,7 +43,7 @@ export default function Register() {
 
     try {
       await newUser({
-        login,
+        nickname,
         name,
         password,
       })
@@ -59,11 +59,11 @@ export default function Register() {
 
       <Form>
         <FormInput
-          label="Login"
-          name="login"
-          value={login}
+          label="Nickname"
+          name="nickname"
+          value={nickname}
           errorHandler={errorHandler}
-          onChange={(e) => setLogin(e.target.value)}
+          onChange={(e) => setNickname(e.target.value)}
         />
 
         <FormInput
