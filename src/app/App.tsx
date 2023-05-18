@@ -38,7 +38,7 @@ export default function App() {
                 <Route path="/info" element={<StateLoggedInRoute component={Info} />} />
                 <Route path="/profile" element={<StateLoggedInRoute component={Profile} />} />
                 <Route path="/password" element={<StateLoggedInRoute component={Password} />} />
-                <Route path="/Game" element={<Game />} />
+                <Route path="/Game" element={<StateLoggedInRoute component={Game} />} />
               </Routes>
             </td>
           </tr>

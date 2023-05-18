@@ -19,18 +19,21 @@ export async function login(params: {
     await axios.get(`${environment.backendUrl}/players/${params.nickname}/login?password=${params.password}`)
     ).data
     
+    const playerArray = res.player
+    const playerData = playerArray[0]
+
     let user: User = {
-      id: res.player.id,
-      nickname: res.player.nickname,
-      name: res.player.name,
-      password: res.player.password,
-      token: res.player.token,
+      id: playerData.id,
+      nickname: playerData.nickname,
+      name: playerData.name,
+      password: playerData.password,
+      token: playerData.token,
       permissions: []
     }
 
-  if (res.player.password === params.password){
-    setCurrentToken(res.player.token)
-    updateSessionToken(res.player.token)
+  if (playerData.password === params.password){
+    setCurrentToken(playerData.token)
+    updateSessionToken(playerData.token)
     updateSessionUser(user) /* la respuesta es un objeto user */
     // void reloadCurrentUser().then()
   }
