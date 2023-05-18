@@ -1,11 +1,12 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './Game.css';
-import './GameService';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import './Game.css'
+import './GameService'
+/* eslint-disable */
 
 interface SquareProps {
-    value: string;
-    onClick: () => void;
+    value: string
+    onClick: () => void
   }
 
 export function Square(props: SquareProps) {
@@ -13,39 +14,36 @@ export function Square(props: SquareProps) {
       <button className="button square" onClick={props.onClick}>
         {props.value}
       </button>
-    );
+    )
   }
   
-  function Board() {
-    //Hooks del board
-    const [squares, setSquares] = React.useState(Array(9).fill(null));
-    const [xSigue, setXSigue] = React.useState(true);
+  function Board(){
+    // Hooks del board
+    const [squares, setSquares] = React.useState(Array(9).fill(null))
+    const [xSigue, setXSigue] = React.useState(true)
 
-    function handleClick(i: number) {
-      const squaresCopy = squares.slice(); //copia del arreglo
-      if (calculateWinner(squaresCopy) || squaresCopy[i]) {  //si juego tiene ganador o boton seleccionado
-        return;
+    function handleClick(i: number){
+      const squaresCopy = squares.slice() // copia del arreglo
+      if (calculateWinner(squaresCopy) || squaresCopy[i]) {  // si juego tiene ganador o boton seleccionado
+        return
       }
-      squaresCopy[i] = xSigue ? "X" : "O"; //para ver quien sigue
-      setSquares(squaresCopy);
-      setXSigue(!xSigue);
+      squaresCopy[i] = xSigue ? "X" : "O" // para ver quien sigue
+      setSquares(squaresCopy)
+      setXSigue(!xSigue)
     }
-  
-    function renderSquare(i: number) { //renderiza los cuadrados
-      return <Square value={squares[i]} onClick={() => handleClick(i)} />;
+    function renderSquare(i: number){ // renderiza los cuadrados
+      return <Square value={squares[i]} onClick={() => handleClick(i)} />
     }
-  
-    const ganador = calculateWinner(squares);  //establece la variable ganador con el simbolo
-  
-    let status;
-  
-    if (ganador) { //comprueba si hay un simbolo
-      status = "Ganador: " + ganador;
-    } else {
-      status = "Siguiente jugador: " + (xSigue ? "X" : "O");
+
+   const ganador = calculateWinner(squares) // establece la variable ganador con el simbolo
+
+   let status
+    if(ganador){// comprueba si hay un simbolo
+      status = "Ganador: "+ String(ganador) // lo pidio eslint
+    }else{
+      status = "Siguiente jugador: " + (xSigue ? "X" : "O")
     }
-  
-    return (
+    return(
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
@@ -64,9 +62,8 @@ export function Square(props: SquareProps) {
           {renderSquare(8)}
         </div>
       </div>
-    );
+      )
   }
-  
   export function Game() {
     return (
       <div className="game">
@@ -78,15 +75,12 @@ export function Square(props: SquareProps) {
           <ol>{/* TODO */}</ol>
         </div>
       </div>
-    );
+    )
   }
   // ========================================
-  
-  ReactDOM.render(<Game />, document.getElementById("root"));
+  ReactDOM.render(<Game />, document.getElementById("root"))
 
-
-
-function calculateWinner(squares: any[]) {
+function calculateWinner(squares: any[]){
     const lines = [
       [0, 1, 2],
       [3, 4, 5],
@@ -96,13 +90,18 @@ function calculateWinner(squares: any[]) {
       [2, 5, 8],
       [0, 4, 8],
       [2, 4, 6],
-    ];
-    
-    for (let i = 0; i < lines.length; i++) {
-      const [a, b, c] = lines[i];
+    ]
+
+    for (const [a, b, c] of lines) {
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-        return squares[a];
+        return squares[a]
       }
-    }
-    return null;
+    }  
+    // for(let i = 0; i < lines.length; i++){
+    //   const [a, b, c] = lines[i]
+    //   if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+    //     return squares[a]
+    //   }
+    // }
+    return null
   }
