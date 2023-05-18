@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './Game.css'
 import './GameService'
+import { BrowserRouter, useNavigate } from 'react-router-dom'
 /* eslint-disable */
 
 interface SquareProps {
@@ -17,11 +18,19 @@ export function Square(props: SquareProps) {
     )
   }
   
+
   function Board(){
     // Hooks del board
-    const [squares, setSquares] = React.useState(Array(9).fill(null))
+    const [initialSquares, setInitialSquares] = React.useState(Array(9).fill(null))
+    const [squares, setSquares] = React.useState([...initialSquares])
     const [xSigue, setXSigue] = React.useState(true)
+    
 
+    function resetBoard() {
+      setSquares([...initialSquares])
+      setXSigue(true)
+    }
+    
     function handleClick(i: number){
       const squaresCopy = squares.slice() // copia del arreglo
       if (calculateWinner(squaresCopy) || squaresCopy[i]) {  // si juego tiene ganador o boton seleccionado
@@ -30,6 +39,7 @@ export function Square(props: SquareProps) {
       squaresCopy[i] = xSigue ? "X" : "O" // para ver quien sigue
       setSquares(squaresCopy)
       setXSigue(!xSigue)
+      
     }
     function renderSquare(i: number){ // renderiza los cuadrados
       return <Square value={squares[i]} onClick={() => handleClick(i)} />
@@ -38,12 +48,15 @@ export function Square(props: SquareProps) {
    const ganador = calculateWinner(squares) // establece la variable ganador con el simbolo
 
    let status
+
     if(ganador){// comprueba si hay un simbolo
       status = "Ganador: "+ String(ganador) // lo pidio eslint
-    }else{
+    } else if (squares.every((square) => square !== null)) {
+      status = "Empate"
+    } else {
       status = "Siguiente jugador: " + (xSigue ? "X" : "O")
     }
-    return(
+        return(
       <div>
         <div className="status">{status}</div>
         <div className="board-row">
@@ -61,6 +74,7 @@ export function Square(props: SquareProps) {
           {renderSquare(7)}
           {renderSquare(8)}
         </div>
+        <button onClick={resetBoard}>Reiniciar</button>
       </div>
       )
   }
@@ -96,7 +110,7 @@ function calculateWinner(squares: any[]){
       if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
         return squares[a]
       }
-    }  
+    }
     // for(let i = 0; i < lines.length; i++){
     //   const [a, b, c] = lines[i]
     //   if(squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
@@ -104,4 +118,4 @@ function calculateWinner(squares: any[]){
     //   }
     // }
     return null
-  }
+    }
