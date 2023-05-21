@@ -16,8 +16,9 @@ export async function login(params: {
   password: string
 }): Promise<User> {
   const res = (
-    await axios.get(`${environment.backendUrl}/players/${params.nickname}/login?password=${params.password}`)
-    ).data
+    await axios.post(`${environment.backendUrl}/players/${params.nickname}/login`, {
+      password: params.password
+    })).data
     
     const playerArray = res.player
     const playerData = playerArray[0]
