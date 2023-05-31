@@ -36,7 +36,7 @@ export function Square(props: SquareProps) {
       if (calculateWinner(squaresCopy) || squaresCopy[i]) {  // si juego tiene ganador o boton seleccionado
         return
       }
-      squaresCopy[i] = xSigue ? "X" : "O" // para ver quien sigue
+      squaresCopy[i] = xSigue ? "X" : "O" 
       setSquares(squaresCopy)
       setXSigue(!xSigue)
       
@@ -86,7 +86,7 @@ export function Square(props: SquareProps) {
         </div>
         <div className="game-info">
           <div>{/* status */}</div>
-          <ol>{/* TODO */}</ol>
+
         </div>
       </div>
     )
